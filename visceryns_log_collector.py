@@ -3,7 +3,7 @@ import json
 import requests
 from datetime import datetime
 
-result = [['Date', 'Encounter', 'Profession', 'Alive', 'DPS', 'Breakbar Damage', 'Log']]
+result = [['Date', 'Encounter', 'Profession', 'Alive', 'Downs', 'DPS', 'Breakbar Damage', 'Damage Taken', 'Log']]
 
 account_name = 'Visceryn.5429'
 
@@ -19,7 +19,9 @@ for log in log_list:
         j = json.loads(c)
 
         alive = 100
+        downs = 0
         dps = 0
+        damage_taken
         breakbar_damage = 'None'
         s_banner_uptime = 0
         d_banner_uptime = 0
@@ -29,11 +31,17 @@ for log in log_list:
                 # player name
                 player_name = p['name']
 
+                # downs
+                downs = p['defenses'][0]['downCount']
+
                 # class
                 player_class = p['profession']
 
                 # dps
                 dps = p['dpsAll'][0]['dps']
+
+                # damage taken
+                damage_taken = p['defenses'][0]['damageTaken']
 
                 # get breakbar damage
                 if 'breakbarDamage1S' in p:
@@ -57,8 +65,10 @@ for log in log_list:
         result_dict.append(j['fightName'])
         result_dict.append(player_class)
         result_dict.append(alive if alive < 100 else 100)
+        result_dict.append(downs)
         result_dict.append(dps)
         result_dict.append(breakbar_damage)
+        result_dict.append(damage_taken)
         result_dict.append(log[:-1])
 
         result.append(result_dict)
